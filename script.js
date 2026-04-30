@@ -194,6 +194,7 @@ elBtnEdit.addEventListener('click', () => {
 // returns proper CORS headers, so redirect:'follow' lets us read the response.
 
 async function fetchExistingSubmission(name) {
+  if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return null;
   const url = `${SCRIPT_URL}?action=get&name=${encodeURIComponent(name)}`;
   const res  = await fetch(url, { redirect: 'follow' });
   if (!res.ok) return null;
@@ -202,9 +203,9 @@ async function fetchExistingSubmission(name) {
 
 async function submitToSheets(data) {
   await fetch(SCRIPT_URL, {
-    method:   'POST',
-    redirect: 'follow',
-    body:     JSON.stringify(data),   // no Content-Type → simple request
+    method: 'POST',
+    mode:   'no-cors',   // Apps Script redirects on POST; no-cors avoids the CORS block
+    body:   JSON.stringify(data),
   });
 }
 

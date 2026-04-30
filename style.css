@@ -25,7 +25,7 @@
 /* === Base === */
 body {
   font-family: 'Nunito', sans-serif;
-  background-color: var(--lavender);
+  background-color: var(--dusty-taupe);
   color: var(--shadow-grey);
   min-height: 100vh;
   padding: 2rem 1.25rem 5rem;
