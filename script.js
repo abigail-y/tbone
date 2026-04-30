@@ -1,4 +1,4 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6C4vGPo7fN3wd8uOyI3bRD4595oNiz2fF2p8CBr3h3KD7NhFh9itz_nicsH3-2a5o9A/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbycj8niFOqaSGRvzQCw5GIwn5opRp7tv7c1CNlB7X_IyJJauSc0g3Y8I-jHJaNV0VE86A/exec';
 
 
 const MONTH_NAMES = [
