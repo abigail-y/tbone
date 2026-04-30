@@ -1,4 +1,4 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8t_iZQDga5Ntr8n6mjFJASgfkjm583iHu9fWFzyux8bAbiku9Q3roh5x24Fp0u3uZeA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6C4vGPo7fN3wd8uOyI3bRD4595oNiz2fF2p8CBr3h3KD7NhFh9itz_nicsH3-2a5o9A/exec';
 
 
 const MONTH_NAMES = [
@@ -169,15 +169,19 @@ elBtnEdit.addEventListener('click', () => {
   showScreen(elScreenCalendar);
 });
 
+// REPLACE WITH THIS:
 async function submitToSheets(data) {
   const params = new URLSearchParams({
-    action:      'submit',
-    name:        data.name,
+    action: 'submit',
+    name: data.name,
     submittedAt: data.submittedAt,
-    days:        data.availableDays.join(','),
+    days: data.availableDays.join(','),
   });
 
-  await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
+  await fetch(`${SCRIPT_URL}?${params.toString()}`, {
+    method: 'GET',
+    mode: 'no-cors',
+  });
 }
 
 config = readConfig();
