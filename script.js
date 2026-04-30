@@ -1,6 +1,5 @@
 // ─── Replace this with your deployed Google Apps Script URL ───────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNmpN1cAVCcZkRn2n9Q8JjUaLZAXvTeFiiRQzxzJpw9-a5niHT7Q0SHwtiFgwz3jYRww/exec';
-
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4cIKrOTYE7F4SieKSSd12MECPZgfbWCqRfFwOXLrN6XHXHVw0miRSOiSsbtdlz-J2lQ/exec';
 
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
@@ -9,15 +8,12 @@ const MONTH_NAMES = [
 
 const DAY_HEADERS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
-// Default months shown if no URL params are set (admin overrides these)
 const DEFAULT_MONTHS = ['2026-05','2026-06','2026-07','2026-08'];
 
-// ─── State ────────────────────────────────────────────────────────────────────
 let userName    = '';
-let selectedDays = new Set();  // stores date strings like "2026-06-15"
+let selectedDays = new Set();  // stores "YYYY-MM-DD"
 let config      = {};
 
-// ─── Elements ─────────────────────────────────────────────────────────────────
 const elLoading        = document.getElementById('loading');
 const elScreenName     = document.getElementById('screen-name');
 const elScreenCalendar = document.getElementById('screen-calendar');
@@ -33,12 +29,11 @@ const elBtnSubmit      = document.getElementById('btn-submit');
 const elConfirmText    = document.getElementById('confirm-text');
 const elBtnEdit        = document.getElementById('btn-edit');
 
-// ─── Config ───────────────────────────────────────────────────────────────────
 function readConfig() {
   const p = new URLSearchParams(window.location.search);
   return {
     title:    p.get('title')    || 'Summer 2026 Availability',
-    subtitle: p.get('subtitle') || 'Availability Survey for bone activities hehehe.',
+    subtitle: p.get('subtitle') || 'Availability Survey',
     months:   p.get('months')   ? p.get('months').split(',') : DEFAULT_MONTHS,
   };
 }
@@ -49,7 +44,6 @@ function applyConfig() {
   elFormSubtitle.textContent = config.subtitle;
 }
 
-// ─── Screen helpers ───────────────────────────────────────────────────────────
 function showScreen(screen) {
   [elScreenName, elScreenCalendar, elScreenConfirm].forEach(s => {
     s.classList.add('hidden');
@@ -63,7 +57,6 @@ function showScreen(screen) {
 function showLoading()  { elLoading.classList.remove('hidden'); }
 function hideLoading()  { elLoading.classList.add('hidden');    }
 
-// ─── Name screen ──────────────────────────────────────────────────────────────
 elBtnContinue.addEventListener('click', handleContinue);
 elNameInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleContinue(); });
 
@@ -74,27 +67,22 @@ async function handleContinue() {
     elNameInput.focus();
     return;
   }
+
   elNameError.classList.add('hidden');
   userName = name;
 
   showLoading();
   try {
-    const existing = await fetchExistingSubmission(name);
-    if (existing?.availableDays?.length) {
-      selectedDays = new Set(existing.availableDays);
-    }
-  } catch {
-    // Network issue or script not yet connected — continue with empty selection
+    selectedDays = new Set();
   } finally {
     hideLoading();
   }
 
-  elCalGreeting.textContent = `Hola! Por favor, click all the days you're free and around UCF. hehehe`;
+  elCalGreeting.textContent = `Hola! Click all the days you're free and around UCF.`;
   renderCalendars();
   showScreen(elScreenCalendar);
 }
 
-// ─── Calendar rendering ───────────────────────────────────────────────────────
 function renderCalendars() {
   elMonthsContainer.innerHTML = '';
   config.months.forEach(monthStr => {
@@ -107,17 +95,14 @@ function buildMonthBlock(year, month) {
   const block = document.createElement('div');
   block.className = 'month-block';
 
-  // Title
   const title = document.createElement('div');
   title.className = 'month-title';
   title.textContent = `${MONTH_NAMES[month - 1]} ${year}`;
   block.appendChild(title);
 
-  // Grid
   const grid = document.createElement('div');
   grid.className = 'cal-grid';
 
-  // Day-of-week headers
   DAY_HEADERS.forEach(d => {
     const h = document.createElement('div');
     h.className = 'day-header';
@@ -125,22 +110,19 @@ function buildMonthBlock(year, month) {
     grid.appendChild(h);
   });
 
-  // Empty filler cells before the 1st
-  const startDow = new Date(year, month - 1, 1).getDay(); // 0 = Sunday
+  const startDow = new Date(year, month - 1, 1).getDay();
   for (let i = 0; i < startDow; i++) {
     const empty = document.createElement('div');
     empty.className = 'day-cell empty';
     grid.appendChild(empty);
   }
 
-  // Day cells
   const daysInMonth = new Date(year, month, 0).getDate();
   for (let d = 1; d <= daysInMonth; d++) {
     const dateStr = `${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const cell = document.createElement('div');
     cell.className = 'day-cell';
     cell.textContent = d;
-    cell.dataset.date = dateStr;
 
     if (selectedDays.has(dateStr)) cell.classList.add('selected');
 
@@ -162,56 +144,41 @@ function toggleDay(cell, dateStr) {
   }
 }
 
-// ─── Submit ───────────────────────────────────────────────────────────────────
 elBtnSubmit.addEventListener('click', handleSubmit);
 
 async function handleSubmit() {
   showLoading();
   try {
     await submitToSheets({
-      name:         userName,
-      submittedAt:  new Date().toISOString(),
+      name: userName,
+      submittedAt: new Date().toISOString(),
       availableDays: Array.from(selectedDays).sort(),
     });
-    elConfirmText.textContent = `Thanks! muahaha.`;
+
+    elConfirmText.textContent = `Thanks!`;
     showScreen(elScreenConfirm);
   } catch {
-    alert('Something went wrong. oops try again bruh');
+    alert('Something went wrong. Try again.');
   } finally {
     hideLoading();
   }
 }
 
-// ─── Edit ─────────────────────────────────────────────────────────────────────
 elBtnEdit.addEventListener('click', () => {
-  renderCalendars();   // re-renders with selectedDays still in memory
+  renderCalendars();
   showScreen(elScreenCalendar);
 });
 
-// ─── Google Sheets fetch calls ────────────────────────────────────────────────
-// No Content-Type header on POST → browser sends as text/plain (simple request,
-// no CORS preflight). Apps Script redirects to googleusercontent.com which
-// returns proper CORS headers, so redirect:'follow' lets us read the response.
-
-async function fetchExistingSubmission(name) {
-  if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return null;
-  const url = `${SCRIPT_URL}?action=get&name=${encodeURIComponent(name)}`;
-  const res  = await fetch(url, { redirect: 'follow' });
-  if (!res.ok) return null;
-  return res.json();
-}
-
 async function submitToSheets(data) {
-  // GET with URL params avoids the POST redirect body-loss issue with Apps Script
   const params = new URLSearchParams({
     action:      'submit',
     name:        data.name,
     submittedAt: data.submittedAt,
     days:        data.availableDays.join(','),
   });
+
   await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
 }
 
-// ─── Boot ─────────────────────────────────────────────────────────────────────
 config = readConfig();
 applyConfig();
