@@ -158,11 +158,6 @@ async function handleSubmit() {
   }
 }
 
-elBtnEdit.addEventListener('click', () => {
-  renderCalendars();
-  showScreen(elScreenCalendar);
-});
-
 async function submitToSupabase(data) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/responses`, {
     method: 'POST',
