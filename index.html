@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Availability</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Loading overlay (shown while checking Google Sheets for returning user) -->
+  <div id="loading" class="overlay hidden">
+    <div class="spinner"></div>
+    <p>WAITTTTTTT</p>
+  </div>
+
+  <!-- Screen 1: Name entry -->
+  <section id="screen-name" class="screen active">
+    <div class="card">
+      <img src="img/cat-home.png" alt="cat" class="home-cat" />
+      <h1 id="form-title">Summer 2026 Availability</h1>
+      <p id="form-subtitle">Let me know when you're free! muahahahaha. </p>
+      <div class="field">
+        <label for="name-input">Your name</label>
+        <input
+          type="text"
+          id="name-input"
+          placeholder="First and last name"
+          autocomplete="name"
+        />
+        <p id="name-error" class="error hidden">Bro pls I need your name.</p>
+      </div>
+      <button id="btn-continue" class="btn primary">Continue →</button>
+    </div>
+  </section>
+
+  <!-- Screen 2: Calendar -->
+  <section id="screen-calendar" class="screen hidden">
+    <header class="cal-header">
+      <p id="cal-greeting">Hola. Por Favor, click on all the days you're free and around UCF. gracias</p>
+    </header>
+
+    <!-- Month calendar grids are injected here by script.js -->
+    <div id="months-container"></div>
+
+    <div class="submit-bar">
+      <button id="btn-submit" class="btn primary">Submit Availability</button>
+    </div>
+  </section>
+
+  <!-- Screen 3: Confirmation -->
+  <section id="screen-confirm" class="screen hidden">
+    <div class="card">
+      <div class="big-check">✓</div>
+      <h2>You're all set!</h2>
+      <p id="confirm-text">Your availability has been saved.</p>
+      <button id="btn-edit" class="btn secondary">Edit my availability</button>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

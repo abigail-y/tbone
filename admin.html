@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Availability Builder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Admin-only styles */
+    body { padding: 1.5rem 1rem 4rem; }
+
+    .admin-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      text-align: center;
+      padding: 1.5rem 0 0.25rem;
+    }
+
+    .admin-header h1 { font-size: 1.75rem; }
+    .admin-header p  { margin-top: 0.35rem; }
+
+    .admin-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem 1.75rem;
+      box-shadow: 0 6px 28px rgba(51, 46, 60, 0.09);
+      margin-top: 1.75rem;
+    }
+
+    .admin-section {
+      margin-bottom: 1.75rem;
+    }
+
+    .admin-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--olive-wood);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.6rem;
+    }
+
+    /* Text + number inputs in admin */
+    .admin-card input[type="text"],
+    .admin-card input[type="number"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--thistle);
+      border-radius: var(--radius-sm);
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--shadow-grey);
+      background: #faf9ff;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+
+    .admin-card input[type="text"]:focus,
+    .admin-card input[type="number"]:focus {
+      border-color: var(--olive-wood);
+    }
+
+    .admin-card input::placeholder {
+      color: var(--thistle);
+      font-weight: 400;
+    }
+
+    /* Year row */
+    .year-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .year-row .section-label {
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .year-row input[type="number"] {
+      width: 100px;
+      text-align: center;
+    }
+
+    /* Month pills */
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .month-pill {
+      padding: 0.55rem 0.25rem;
+      border-radius: 999px;
+      border: 2px solid var(--thistle);
+      background: #faf9ff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--shadow-grey);
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .month-pill:hover:not(.selected) {
+      border-color: var(--olive-wood);
+    }
+
+    .month-pill.selected {
+      background: var(--shadow-grey);
+      border-color: var(--shadow-grey);
+      color: var(--white);
+    }
+
+    /* Link output */
+    .link-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .link-row input[type="text"] {
+      flex: 1;
+      font-size: 0.78rem;
+      color: var(--dusty-taupe);
+      cursor: default;
+    }
+
+    .btn-copy {
+      padding: 0 1.25rem;
+      border: none;
+      border-radius: 999px;
+      background: var(--shadow-grey);
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+
+    .btn-copy:hover { opacity: 0.82; }
+
+    .copy-confirm {
+      text-align: center;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #4fa876;
+      min-height: 1.4em;
+      margin-top: 0.5rem;
+    }
+
+    .open-preview {
+      display: block;
+      text-align: center;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--olive-wood);
+      text-decoration: none;
+    }
+
+    .open-preview:hover { text-decoration: underline; }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 2px solid var(--lavender);
+      margin: 1.75rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-wrap">
+
+    <div class="admin-header">
+      <h1>Availability Builder</h1>
+      <p>Set up your form below, then copy the link to send out.</p>
+    </div>
+
+    <div class="admin-card">
+
+      <!-- Title -->
+      <div class="admin-section">
+        <span class="section-label">Form title</span>
+        <input type="text" id="input-title" value="Summer 2026 Availability" placeholder="e.g. Summer 2026 Availability" />
+      </div>
+
+      <!-- Subtitle -->
+      <div class="admin-section">
+        <span class="section-label">Description (shown under the title)</span>
+        <input type="text" id="input-subtitle" value="Availability Survey for bone activities hehehe." placeholder="Short instruction for your respondents" />
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Year + Month picker -->
+      <div class="admin-section">
+        <div class="year-row">
+          <span class="section-label">Year</span>
+          <input type="number" id="input-year" value="2026" min="2024" max="2035" />
+        </div>
+        <span class="section-label">Months to include</span>
+        <div class="month-grid" id="month-grid">
+          <!-- Pills injected by admin.js -->
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Generated link -->
+      <div class="admin-section">
+        <span class="section-label">Your shareable link</span>
+        <div class="link-row">
+          <input type="text" id="output-link" readonly />
+          <button class="btn-copy" id="btn-copy">Copy</button>
+        </div>
+        <p id="copy-confirm" class="copy-confirm"></p>
+        <a id="open-preview" class="open-preview" href="#" target="_blank">Open preview ↗</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
