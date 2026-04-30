@@ -159,9 +159,6 @@ function renderResults(rows) {
         <div class="person-name">${sub.name}</div>
         <div class="person-sub">${formatSubmittedAt(sub.submittedAt)}</div>
       </div>
-      <div class="person-badge${isZero ? ' zero' : ''}">
-        ${sub.availableDays.length} day${sub.availableDays.length !== 1 ? 's' : ''}
-      </div>
     `;
     elPersonList.appendChild(row);
   });
