@@ -4,7 +4,7 @@ const MONTH_NAMES = [
 ];
 
 // Default to June, July, August (0-indexed)
-let selectedMonths = new Set([5, 6, 7]);
+let selectedMonths = new Set([4, 5, 6, 7]);
 
 // ─── Elements ─────────────────────────────────────────────────────────────────
 const elTitle       = document.getElementById('input-title');
