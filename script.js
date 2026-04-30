@@ -1,5 +1,5 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIphldN8swI1SKbZ6XSKkNEMTQeIYStpdQlxswf8kUUMB1GfxA2Yerymzkwfdm_fhwEw/exec';
-
+const SUPABASE_URL = 'https://jojysnwoqbhdnocnipka.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpvanlzbndvcWJoZG5vY25pcGthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1NjUyMjUsImV4cCI6MjA5MzE0MTIyNX0.IUumn_rCCpgVpllUhKBNT6qOKL0a_DssO8Qz1hFHq38';
 
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
@@ -10,24 +10,24 @@ const DAY_HEADERS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
 const DEFAULT_MONTHS = ['2026-05','2026-06','2026-07','2026-08'];
 
-let userName    = '';
-let selectedDays = new Set();  // stores "YYYY-MM-DD"
-let config      = {};
+let userName     = '';
+let selectedDays = new Set();
+let config       = {};
 
-const elLoading        = document.getElementById('loading');
-const elScreenName     = document.getElementById('screen-name');
-const elScreenCalendar = document.getElementById('screen-calendar');
-const elScreenConfirm  = document.getElementById('screen-confirm');
-const elFormTitle      = document.getElementById('form-title');
-const elFormSubtitle   = document.getElementById('form-subtitle');
-const elNameInput      = document.getElementById('name-input');
-const elNameError      = document.getElementById('name-error');
-const elBtnContinue    = document.getElementById('btn-continue');
-const elCalGreeting    = document.getElementById('cal-greeting');
-const elMonthsContainer= document.getElementById('months-container');
-const elBtnSubmit      = document.getElementById('btn-submit');
-const elConfirmText    = document.getElementById('confirm-text');
-const elBtnEdit        = document.getElementById('btn-edit');
+const elLoading         = document.getElementById('loading');
+const elScreenName      = document.getElementById('screen-name');
+const elScreenCalendar  = document.getElementById('screen-calendar');
+const elScreenConfirm   = document.getElementById('screen-confirm');
+const elFormTitle       = document.getElementById('form-title');
+const elFormSubtitle    = document.getElementById('form-subtitle');
+const elNameInput       = document.getElementById('name-input');
+const elNameError       = document.getElementById('name-error');
+const elBtnContinue     = document.getElementById('btn-continue');
+const elCalGreeting     = document.getElementById('cal-greeting');
+const elMonthsContainer = document.getElementById('months-container');
+const elBtnSubmit       = document.getElementById('btn-submit');
+const elConfirmText     = document.getElementById('confirm-text');
+const elBtnEdit         = document.getElementById('btn-edit');
 
 function readConfig() {
   const p = new URLSearchParams(window.location.search);
@@ -54,8 +54,8 @@ function showScreen(screen) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function showLoading()  { elLoading.classList.remove('hidden'); }
-function hideLoading()  { elLoading.classList.add('hidden');    }
+function showLoading() { elLoading.classList.remove('hidden'); }
+function hideLoading() { elLoading.classList.add('hidden');    }
 
 elBtnContinue.addEventListener('click', handleContinue);
 elNameInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleContinue(); });
@@ -70,13 +70,7 @@ async function handleContinue() {
 
   elNameError.classList.add('hidden');
   userName = name;
-
-  showLoading();
-  try {
-    selectedDays = new Set();
-  } finally {
-    hideLoading();
-  }
+  selectedDays = new Set();
 
   elCalGreeting.textContent = `Hola! Click all the days you're free and around UCF.`;
   renderCalendars();
@@ -125,7 +119,6 @@ function buildMonthBlock(year, month) {
     cell.textContent = d;
 
     if (selectedDays.has(dateStr)) cell.classList.add('selected');
-
     cell.addEventListener('click', () => toggleDay(cell, dateStr));
     grid.appendChild(cell);
   }
@@ -149,15 +142,16 @@ elBtnSubmit.addEventListener('click', handleSubmit);
 async function handleSubmit() {
   showLoading();
   try {
-    await submitToSheets({
+    await submitToSupabase({
       name: userName,
-      submittedAt: new Date().toISOString(),
-      availableDays: Array.from(selectedDays).sort(),
+      submitted_at: new Date().toISOString(),
+      available_days: Array.from(selectedDays).sort(),
     });
 
     elConfirmText.textContent = `Thanks!`;
     showScreen(elScreenConfirm);
-  } catch {
+  } catch (err) {
+    console.error(err);
     alert('Something went wrong. Try again.');
   } finally {
     hideLoading();
@@ -169,19 +163,22 @@ elBtnEdit.addEventListener('click', () => {
   showScreen(elScreenCalendar);
 });
 
-// REPLACE WITH THIS:
-async function submitToSheets(data) {
-  const params = new URLSearchParams({
-    action: 'submit',
-    name: data.name,
-    submittedAt: data.submittedAt,
-    days: data.availableDays.join(','),
+async function submitToSupabase(data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/responses`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Prefer': 'return=minimal',
+    },
+    body: JSON.stringify(data),
   });
 
-  await fetch(`${SCRIPT_URL}?${params.toString()}`, {
-    method: 'GET',
-    mode: 'no-cors',
-  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
 }
 
 config = readConfig();
