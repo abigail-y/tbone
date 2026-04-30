@@ -1,5 +1,5 @@
 // ─── Replace this with your deployed Google Apps Script URL ───────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz0Lq93b7pxd-a8-RqdIqWpv6W66k1KyKxdhtK57cJMASNcSML8vp-g6XhgIyLwedr1fA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn9sMQoed3Q1xMh22YOA2ggNRYaaIqDv_TwYt6aiin_9KYTUzzT8MFhSCGieqDW3_dgQ/exec';
 
 
 const MONTH_NAMES = [
@@ -173,7 +173,7 @@ async function handleSubmit() {
       submittedAt:  new Date().toISOString(),
       availableDays: Array.from(selectedDays).sort(),
     });
-    elConfirmText.textContent = `Thanks, ${userName}! muahaha.`;
+    elConfirmText.textContent = `Thanks! muahaha.`;
     showScreen(elScreenConfirm);
   } catch {
     alert('Something went wrong. oops try again bruh');
@@ -202,11 +202,14 @@ async function fetchExistingSubmission(name) {
 }
 
 async function submitToSheets(data) {
-  await fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode:   'no-cors',   // Apps Script redirects on POST; no-cors avoids the CORS block
-    body:   JSON.stringify(data),
+  // GET with URL params avoids the POST redirect body-loss issue with Apps Script
+  const params = new URLSearchParams({
+    action:      'submit',
+    name:        data.name,
+    submittedAt: data.submittedAt,
+    days:        data.availableDays.join(','),
   });
+  await fetch(`${SCRIPT_URL}?${params}`, { mode: 'no-cors' });
 }
 
 // ─── Boot ─────────────────────────────────────────────────────────────────────

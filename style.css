@@ -306,11 +306,13 @@ input[type="text"]::placeholder {
 }
 
 /* === Confirmation Screen === */
-.big-check {
-  font-size: 3.5rem;
-  color: var(--available);
-  display: block;
-  margin-bottom: 0.75rem;
+.confirm-img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  box-shadow: var(--card-shadow);
 }
 
 #screen-confirm .card {
