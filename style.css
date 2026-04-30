@@ -322,114 +322,7 @@ input[type="text"]::placeholder {
   margin-top: 0.4rem;
 }
 
-/* ═══════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════ */
-
-/* Tablet and below */
-@media (max-width: 600px) {
-  body {
-    padding: 1.5rem 1rem 4rem;
-  }
-
-  .card {
-    padding: 2rem 1.5rem;
-    margin-top: 2rem;
-    border-radius: 16px;
-  }
-
-  h1 {
-    font-size: 1.7rem;
-  }
-
-  .month-block {
-    padding: 1.5rem 1.1rem;
-    border-radius: 16px;
-  }
-
-  .cal-grid {
-    gap: 4px;
-  }
-}
-
-/* Small phones (iPhone SE, Galaxy A series, etc.) */
-@media (max-width: 400px) {
-  body {
-    padding: 1rem 0.6rem 3rem;
-  }
-
-  .card {
-    padding: 1.75rem 1.1rem;
-    margin-top: 1.5rem;
-    border-radius: 14px;
-  }
-
-  h1 {
-    font-size: 1.45rem;
-  }
-
-  h2 {
-    font-size: 1.25rem;
-  }
-
-  .cal-header {
-    padding: 1.25rem 0 1rem;
-  }
-
-  #cal-greeting {
-    font-size: 0.95rem;
-  }
-
-  .month-block {
-    padding: 1.25rem 0.75rem;
-    margin-bottom: 1rem;
-    border-radius: 14px;
-  }
-
-  .month-title {
-    font-size: 1.05rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .day-header {
-    font-size: 0.62rem;
-    padding-bottom: 0.35rem;
-  }
-
-  .day-cell {
-    font-size: 0.78rem;
-    border-radius: 6px;
-    border-width: 1.5px;
-  }
-
-  .cal-grid {
-    gap: 3px;
-  }
-
-  .btn {
-    padding: 0.85rem 1.5rem;
-    font-size: 0.95rem;
-  }
-
-  .big-check {
-    font-size: 2.75rem;
-  }
-
-  #screen-confirm .card {
-    margin-top: 2rem;
-  }
-}
-
-/* Touch devices — slightly bigger tap area for day cells */
-@media (pointer: coarse) {
-  .day-cell {
-    border-radius: 8px;
-  }
-
-  .day-cell:hover {
-    border-color: transparent;
-  }
-  /* ── Admin Results Card ── */
+/* ── Admin Results Card ── */
 .results-header {
   display: flex;
   align-items: center;
@@ -599,4 +492,113 @@ input[type="text"]::placeholder {
 
 .results-content { display: none; }
 .results-content.visible { display: block; }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+
+/* Tablet and below */
+@media (max-width: 600px) {
+  body {
+    padding: 1.5rem 1rem 4rem;
+  }
+
+  .card {
+    padding: 2rem 1.5rem;
+    margin-top: 2rem;
+    border-radius: 16px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  .month-block {
+    padding: 1.5rem 1.1rem;
+    border-radius: 16px;
+  }
+
+  .cal-grid {
+    gap: 4px;
+  }
+}
+
+/* Small phones (iPhone SE, Galaxy A series, etc.) */
+@media (max-width: 400px) {
+  body {
+    padding: 1rem 0.6rem 3rem;
+  }
+
+  .card {
+    padding: 1.75rem 1.1rem;
+    margin-top: 1.5rem;
+    border-radius: 14px;
+  }
+
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .cal-header {
+    padding: 1.25rem 0 1rem;
+  }
+
+  #cal-greeting {
+    font-size: 0.95rem;
+  }
+
+  .month-block {
+    padding: 1.25rem 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 14px;
+  }
+
+  .month-title {
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .day-header {
+    font-size: 0.62rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .day-cell {
+    font-size: 0.78rem;
+    border-radius: 6px;
+    border-width: 1.5px;
+  }
+
+  .cal-grid {
+    gap: 3px;
+  }
+
+  .btn {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .big-check {
+    font-size: 2.75rem;
+  }
+
+  #screen-confirm .card {
+    margin-top: 2rem;
+  }
+}
+
+/* Touch devices — slightly bigger tap area for day cells */
+@media (pointer: coarse) {
+  .day-cell {
+    border-radius: 8px;
+  }
+
+  .day-cell:hover {
+    border-color: transparent;
+  }
+  
 }
