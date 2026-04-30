@@ -10,7 +10,7 @@ const MONTH_NAMES = [
 const DAY_HEADERS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
 // Default months shown if no URL params are set (admin overrides these)
-const DEFAULT_MONTHS = ['2026-06','2026-07','2026-08'];
+const DEFAULT_MONTHS = ['2026-05','2026-06','2026-07','2026-08'];
 
 // ─── State ────────────────────────────────────────────────────────────────────
 let userName    = '';
