@@ -18,19 +18,15 @@
 
     <!-- Link builder card -->
     <div class="admin-card">
-
       <div class="admin-section">
         <span class="section-label">Form title</span>
         <input type="text" id="input-title" value="Summer 2026 Availability" placeholder="e.g. Summer 2026 Availability" />
       </div>
-
       <div class="admin-section">
         <span class="section-label">Description (shown under the title)</span>
         <input type="text" id="input-subtitle" value="Availability Survey for bone activities hehehe." placeholder="Short instruction for your respondents" />
       </div>
-
       <hr class="divider" />
-
       <div class="admin-section">
         <div class="year-row">
           <span class="section-label">Year</span>
@@ -39,9 +35,7 @@
         <span class="section-label">Months to include</span>
         <div class="month-grid" id="month-grid"></div>
       </div>
-
       <hr class="divider" />
-
       <div class="admin-section">
         <span class="section-label">Your shareable link</span>
         <div class="link-row">
@@ -51,7 +45,6 @@
         <p id="copy-confirm" class="copy-confirm"></p>
         <a id="open-preview" class="open-preview" href="#" target="_blank">Open preview ↗</a>
       </div>
-
     </div>
 
     <!-- Results card -->
@@ -67,26 +60,50 @@
 
       <div class="results-content" id="results-content">
 
-        <div class="stat-row">
+        <!-- Single stat -->
+        <div class="stat-single">
           <div class="stat-box">
             <div class="stat-num" id="stat-responses">—</div>
             <div class="stat-lbl">Responses</div>
           </div>
-          <div class="stat-box">
-            <div class="stat-num" id="stat-best-day">—</div>
-            <div class="stat-lbl">Best day</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-num" id="stat-overlap">—</div>
-            <div class="stat-lbl">Top overlap</div>
-          </div>
         </div>
-
-        <span class="results-section-label">Top days</span>
-        <div class="bar-list" id="bar-list"></div>
 
         <hr class="divider" />
 
+        <!-- Calendar view -->
+        <span class="results-section-label">Availability by month</span>
+        <div class="month-nav">
+          <button class="nav-btn" id="cal-prev">&#8592;</button>
+          <span class="month-nav-title" id="cal-month-title"></span>
+          <button class="nav-btn" id="cal-next">&#8594;</button>
+        </div>
+        <div class="cal-day-headers">
+          <div class="day-hdr">Su</div><div class="day-hdr">Mo</div>
+          <div class="day-hdr">Tu</div><div class="day-hdr">We</div>
+          <div class="day-hdr">Th</div><div class="day-hdr">Fr</div>
+          <div class="day-hdr">Sa</div>
+        </div>
+        <div class="results-cal-grid" id="results-cal-grid"></div>
+
+        <div class="cal-legend">
+          <div class="legend-item"><div class="legend-swatch" style="background:var(--available)"></div><div class="legend-lbl">Everyone</div></div>
+          <div class="legend-item"><div class="legend-swatch" style="background:#c5ebd6"></div><div class="legend-lbl">Most</div></div>
+          <div class="legend-item"><div class="legend-swatch" style="background:#e8f8ef"></div><div class="legend-lbl">Some</div></div>
+          <div class="legend-item"><div class="legend-swatch" style="background:#f7f5ff"></div><div class="legend-lbl">Nobody</div></div>
+        </div>
+
+        <!-- Day detail panel (shown on date click) -->
+        <div class="day-detail" id="day-detail">
+          <div class="day-detail-header">
+            <span class="day-detail-title" id="day-detail-title"></span>
+            <button class="day-detail-close" id="day-detail-close">&#10005;</button>
+          </div>
+          <div class="day-detail-names" id="day-detail-names"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Who responded -->
         <span class="results-section-label">Who responded</span>
         <div class="person-list" id="person-list"></div>
 
@@ -94,7 +111,6 @@
     </div>
 
   </div>
-
   <script src="admin.js"></script>
 </body>
 </html>
