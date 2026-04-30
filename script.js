@@ -1,5 +1,5 @@
 // ─── Replace this with your deployed Google Apps Script URL ───────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxq0gw6F8NK1IY-DUfwP8sBz4kA3po90CmiWifMVr97mwSDCG0XMV9fPlGk3oFVbYJ45g/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNmpN1cAVCcZkRn2n9Q8JjUaLZAXvTeFiiRQzxzJpw9-a5niHT7Q0SHwtiFgwz3jYRww/exec';
 
 
 const MONTH_NAMES = [
