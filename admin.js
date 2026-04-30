@@ -1,4 +1,4 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz8t_iZQDga5Ntr8n6mjFJASgfkjm583iHu9fWFzyux8bAbiku9Q3roh5x24Fp0u3uZeA/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxIphldN8swI1SKbZ6XSKkNEMTQeIYStpdQlxswf8kUUMB1GfxA2Yerymzkwfdm_fhwEw/exec';
 
 const MONTH_NAMES = [
   'Jan','Feb','Mar','Apr','May','Jun',
@@ -158,15 +158,33 @@ elBtnLoad.addEventListener('click', async () => {
   elBtnLoad.textContent = 'Loading…';
   elBtnLoad.disabled = true;
   elPlaceholder.textContent = 'Fetching responses…';
-  elResultsContent.classList.remove('visible');
   elPlaceholder.style.display = '';
+  elResultsContent.classList.remove('visible');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
 
   try {
-    const res = await fetch(`${SCRIPT_URL}?action=getAll`);
-    const data = await res.json();
+    const res = await fetch(`${SCRIPT_URL}?action=getAll`, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error(`Bad response (not JSON): ${text.slice(0, 120)}`);
+    }
     renderResults(data);
-  } catch {
-    elPlaceholder.textContent = 'Couldn\'t load results. Check your Apps Script URL and try again.';
+  } catch (err) {
+    clearTimeout(timeout);
+    elPlaceholder.style.display = '';
+    elResultsContent.classList.remove('visible');
+    if (err.name === 'AbortError') {
+      elPlaceholder.textContent = 'Timed out after 20 s — Apps Script may be on a cold start. Wait a moment and try again.';
+    } else {
+      elPlaceholder.textContent = `Couldn't load results: ${err.message}`;
+    }
   } finally {
     elBtnLoad.textContent = 'Refresh';
     elBtnLoad.disabled = false;
